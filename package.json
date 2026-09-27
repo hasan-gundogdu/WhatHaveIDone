@@ -1,0 +1,10 @@
+{
+  "name": "whid-core",
+  "version": "0.1.0-alpha.2",
+  "private": true,
+  "description": "Repository checks for the WhatHaveIDone Agent Skill",
+  "scripts": {
+    "validate": "node scripts/validate-repository.mjs"
+  },
+  "license": "Apache-2.0"
+}

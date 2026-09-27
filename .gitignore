@@ -1,0 +1,12 @@
+# Local evaluation artifacts and disposable worktrees
+evals/results/
+evals/.worktrees/
+
+# Optional local WHID experiments; Core never creates this directory itself
+.what-have-i-done/
+
+# Common editor and operating-system files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
