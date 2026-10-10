@@ -1,24 +1,26 @@
 ---
 name: whid
-description: Analyze repository changes to restore developer understanding and code ownership. Use only when the user explicitly invokes WHID, requests a WHID Quick or Deep analysis, or explicitly asks for an ownership recap of what they changed. Do not activate for ordinary coding, explanation, review, commit, or refactoring work.
+description: Explain repository changes or build an ordered developer onboarding guide. Use only for explicit WHID invocations, WHID onboarding requests, or ownership recaps of what the user changed. Do not activate for ordinary coding, explanation, review, commit, or refactoring work.
 license: Apache-2.0
-compatibility: Requires Git and a coding agent with read access to the repository and shell or equivalent Git inspection capabilities.
+compatibility: Requires Git and repository inspection capabilities. Saved onboarding additionally requires filesystem writes and SHA-256 hashing in the host environment.
 metadata:
   author: hasan-gundogdu
-  version: "0.1.0-alpha.2"
+  version: "0.2.0-alpha.1"
 ---
 
 # WhatHaveIDone
 
-Restore the user's ownership of a change. Explain behavior before files, group
-the diff into logical changes, and distinguish evidence from inference. Never
-modify the repository while performing a WHID analysis.
+Restore developer understanding of a change or a project. Explain behavior
+before files and distinguish evidence from inference. Quick and Deep analyze
+changes without modifying the repository. Onboard teaches the current project;
+only an explicitly requested saved guide may write to its report directory.
 
 ## Activation boundary
 
-Run only after an explicit WHID invocation or an explicit request to explain
-what the user changed. Do not run automatically, offer a WHID report, or append
-one after normal coding, review, commit, or refactoring work.
+Run only after an explicit WHID invocation, an explicit WHID onboarding request,
+or an explicit request to explain what the user changed. Do not run automatically,
+offer a WHID report, or append one after normal coding, review, commit, or
+refactoring work.
 
 Accept these canonical forms:
 
@@ -29,14 +31,24 @@ whid <commit-ish>
 whid A..B
 whid --deep
 whid <scope> --deep
+whid --onboard
+whid --onboard --save <directory>
 ```
 
-Treat flag order as flexible. Accept at most one scope and one `--deep` flag.
-Reject `A...B`, multiple scopes, unknown flags, and unresolved revisions with a
-clear error. Never substitute another scope after validation fails.
+Treat flag order as flexible. Quick/Deep accept at most one scope and one
+`--deep` flag. Onboard accepts one `--onboard` flag and optionally one `--save`
+with a nonempty directory argument (quote paths containing spaces). It accepts
+neither a Git scope nor `--deep`. `--save` is Onboard-only. Reject duplicate or
+unknown flags, missing arguments, `A...B`, multiple scopes, and unresolved
+revisions with a clear error before analysis or writes. Never substitute a mode
+or scope after validation fails.
 
 Quick is the default. Use Deep only when `--deep` is present or the user
-explicitly requests a deep analysis. Write the report in the user's language;
+explicitly requests a deep change analysis. Use Onboard only when `--onboard`
+is present or the user explicitly requests WHID project onboarding. An explicit
+natural-language request to save that guide to a directory is equivalent to
+`--save`. Repeating the saved invocation refreshes or resumes it automatically;
+there is no separate resume flag. Write the report in the user's language;
 preserve identifiers and evidence labels as written in this skill.
 
 Directly below every report title, write
@@ -49,13 +61,30 @@ repository being analyzed.
 - For every run, read [the evidence model](references/evidence-model.md).
 - For Quick, read [the Quick report contract](references/quick-report.md).
 - For Deep, read [the Deep report contract](references/deep-report.md).
+- For Onboard, read [the Onboard report contract](references/onboard-report.md).
+- For saved Onboard only, also read
+  [the onboarding state contract](references/onboarding-state.md).
 - For a commit, merge commit, root commit, or revision range, also read
   [historical analysis](references/historical-analysis.md).
 
 These references are terminal: do not look for additional instruction files
 inside them.
 
-## Resolve the scope
+## Route the work
+
+For Onboard, follow the Onboard contract, then the shared Tests and delivery
+rules below. Its scope is the current working-tree project, not a Before/After
+diff. Do not apply the change-analysis pipeline to it. For Quick/Deep, follow
+the remaining scope and change-analysis sections.
+
+For every mode, inspect candidate paths by name, type, and size before content.
+Do not read ignored files, binaries, generated/vendor output, `.env` files,
+credential or secret candidates, or private keys without explicit permission.
+Do not follow symlinks or traverse submodules/other repositories implicitly;
+record these as scope limits. Saved Onboard may read its explicitly requested
+report directory even if ignored; that exception does not admit ignored source.
+
+## Resolve the change scope
 
 First confirm the repository root and that Git can resolve the requested scope.
 Use read-only Git inspection. Do not checkout, switch, reset, restore, stash,
@@ -135,12 +164,20 @@ State whether tests were run in every report.
 
 ## Deliver safely
 
-Return the report in chat by default. Save it only when the user explicitly
-requests an exact destination outside the analyzed repository. If the requested
-path is inside that repository, explain the read-only boundary and ask for an
-external destination instead. WHID never writes to the analyzed repository.
+For Quick/Deep, return the report in chat by default. Save it only when the user
+explicitly requests an exact destination outside the analyzed repository. If the
+requested path is inside that repository, explain the read-only boundary and ask
+for an external destination instead.
 
-Before finishing, verify:
+For Onboard, return an ordered Markdown guide in chat unless a save directory
+was explicitly requested. That request authorizes creating and updating only
+the generated guide files and manifest within that directory, inside or outside
+the repository. Follow the state contract to protect existing content. Never
+stage, commit, change refs, edit source/configuration, or update existing project
+documentation outside that directory. A saved destination grants no authority
+to run tests or setup commands.
+
+Before finishing Quick/Deep, verify:
 
 - the scope in the report matches the validated scope
 - logical changes lead and file lists support them
@@ -154,3 +191,6 @@ Before finishing, verify:
   one broad open question does not satisfy this check
 - empty or low-value sections were omitted
 - no repository or Git state was changed
+
+Before finishing Onboard, verify the report contract's completion checks and,
+when saved, the state contract's freshness, checkpoint, and write-boundary checks.

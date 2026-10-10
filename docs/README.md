@@ -6,6 +6,10 @@
   runtime contract, scope model, and evidence discipline.
 - [Distribution](architecture/DISTRIBUTION.md) — installation, support tiers,
   portability, validation, and version policy.
+- [Onboard Report](../skills/whid/references/onboard-report.md) — ordered learning
+  route, chapter content, and completion criteria.
+- [Onboarding State](../skills/whid/references/onboarding-state.md) — saved output,
+  manifest schema, freshness, ownership, refresh, and resume.
 
 ## Decisions
 
@@ -13,6 +17,10 @@
   vendor-neutral canonical skill.
 - [ADR 0002: Eval-First Git Strategy](decisions/0002-eval-first-git-strategy.md)
   — instruction-only scope handling with a measured helper fallback.
+
+These ADRs record v0.1 decisions. Core v0.2 retains the instruction-only,
+vendor-neutral approach and adds the scoped saved-Onboard exception described
+in Core Design.
 
 ## Evaluation
 

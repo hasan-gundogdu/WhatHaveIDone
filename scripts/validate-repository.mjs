@@ -121,7 +121,7 @@ for (const forbidden of [
   path.join(skillRoot, "scripts"),
   path.join(skillRoot, "assets"),
 ]) {
-  if (fs.existsSync(forbidden)) fail(`${relative(forbidden)} is outside the Core v0.1 boundary`);
+  if (fs.existsSync(forbidden)) fail(`${relative(forbidden)} is outside the instruction-only Core boundary`);
 }
 
 if (errors.length) {

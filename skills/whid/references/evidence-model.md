@@ -73,5 +73,12 @@ In Deep, connect every material claim to a compact evidence appendix. Prefer
 symbol or narrow line references when available; line numbers alone can drift
 between revisions, so include the revision for historical evidence.
 
+In Onboard, map material claims to a compact evidence list in each chapter.
+Use the current working-tree snapshot as provenance, including local changes;
+HEAD alone does not identify dirty source content. Existing documentation can
+support intent, but verify important behavior against implementation and runtime
+wiring. Generated onboarding chapters and their manifest are reuse metadata,
+not independent evidence for project behavior.
+
 Avoid absolutes unsupported by the search boundary. For tests, use “no related
 test was found in the explored context,” and describe where you looked.

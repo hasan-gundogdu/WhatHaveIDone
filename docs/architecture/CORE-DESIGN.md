@@ -1,14 +1,15 @@
-# WhatHaveIDone Core v0.1 Design
+# WhatHaveIDone Core v0.2 Design
 
 ## Purpose
 
-WHID restores developer understanding of a repository change. The canonical
-implementation is the Agent Skill at `skills/whid/`; product documents explain
-the contract but do not override the installed skill at runtime.
+WHID restores developer understanding of a repository change or a current
+project. The canonical implementation is the Agent Skill at `skills/whid/`;
+product documents explain the contract but do not override the installed skill
+at runtime.
 
 ## Boundary
 
-Core v0.1 contains portable instructions and references only. It does not
+Core v0.2 contains portable instructions and references only. It does not
 contain host-specific metadata, hooks, allowed-tool declarations, MCP servers,
 custom installers, report assets, or a WHID-owned service. In particular,
 `agents/openai.yaml` and Claude-specific metadata are distribution concerns,
@@ -24,12 +25,17 @@ its behavior.
 WHID is explicitly activated. Normal coding, review, commit, or refactoring
 requests must not trigger it or cause an unsolicited WHID suggestion.
 
-The input is one optional Git scope plus one optional `--deep` flag. Quick is
-the default. The report is returned in the user's language in chat unless the
-user explicitly requests a file outside the analyzed repository. The analysis
-is read-only and tests are not run unless separately requested.
+Quick/Deep accept one optional Git scope plus one optional `--deep` flag. Quick
+is the default. Onboard accepts `--onboard` and an optional `--save <directory>`;
+it rejects scopes and `--deep`, and `--save` is invalid in change-analysis modes.
+Duplicate/unknown flags and missing values fail before analysis or writes.
 
-## Analysis flow
+Reports use the user's language and default to chat. Quick/Deep remain read-only
+and may be saved only outside the repository. An explicit saved-Onboard request
+authorizes managed report files in that directory, inside or outside the repo.
+No mode mutates Git state. Tests/setup require a separate request.
+
+## Change-analysis flow
 
 ```text
 explicit request
@@ -69,16 +75,55 @@ Historical analysis never checks out a revision. Current operational
 instructions remain safety constraints; revision-local documentation is
 historical architecture evidence only.
 
+## Onboarding flow and persistent state
+
+```text
+explicit Onboard request
+  → resolve current working-tree scope and documentation map
+  → validate destination and reconcile saved state, when requested
+  → present ordered learning route with prerequisites
+  → trace real operations and draft chapters in reading order
+  → verify evidence and checkpoint each completed chapter
+  → verify freshness, navigation, coverage, and completion
+```
+
+The canonical runtime contracts are [Onboard Report](../../skills/whid/references/onboard-report.md)
+and [Onboarding State](../../skills/whid/references/onboarding-state.md). They define
+the chapter content and manifest schema; do not maintain a second schema here.
+
+The design chooses Markdown chapters plus a small JSON progress/verification
+manifest over a new renderer or indexing service. A chapter is both a teaching
+unit and a unit of reuse. Prerequisites preserve narrative order and propagate
+staleness. Source fingerprints, watched module paths, and global inputs determine
+what needs revisiting; generated prose cannot validate itself.
+
+Source inventory includes eligible untracked and dirty files, excludes report
+output, and is rechecked before claiming freshness. Unassigned changed paths
+require triage, so adding a module cannot evade refresh merely because old
+chapters never cited it. Reuse avoids repeated semantic reading but still incurs
+filesystem I/O. Broad changes can invalidate the full route.
+
+Saving is an explicit v0.2 exception to v0.1's repository-wide read-only rule.
+It is limited to owned report files in the requested directory. Output hashes
+protect manual edits; checkpoints and integrity checks make interruptions visible.
+A torn checkpoint may require resolving a preserved file conflict rather than
+silently regenerating the directory. There is no claim of multi-file atomicity.
+
 ## Safety and privacy
 
-WHID does not modify repository files or Git state. An explicitly requested
-saved report must be written outside the analyzed repository. WHID does not read ignored
+WHID does not change source, existing project documentation outside the requested
+Onboard directory, or Git state. Quick/Deep saved files remain external. Saved
+Onboard may create/update only managed output in its explicitly requested directory,
+with path containment and existing-content checks. WHID does not read ignored
 content, generated/vendor output, binaries, `.env` files, credentials, secret
 candidates, or private keys without explicit permission. Untracked files are
-triaged by path, type, and size before content is considered.
+triaged by path, type, and size before content is considered. A saved Onboard
+destination may be read even if ignored; this does not authorize ignored source
+reads. Symlinks and other repositories are not implicitly traversed.
 
 Core uses the host's existing repository access and requires no WHID-owned
-server. Hosted services and persistent report storage are outside Core v0.1.
+server. Cloud history, API sync, dashboards, billing, and HTML rendering are
+outside v0.2. Local saved Markdown onboarding guides are included.
 
 ## Evidence model
 
@@ -89,4 +134,5 @@ strong repository evidence.
 
 The internal evidence ledger is an analysis discipline, not a required public
 schema. Quick cites evidence near claims without a large appendix. Deep binds
-important claims to a compact evidence appendix.
+important claims to a compact evidence appendix. Onboard binds them to chapter
+evidence lists; its manifest tracks progress/freshness and is not an evidence ledger.

@@ -5,7 +5,8 @@ Thanks for helping improve WhatHaveIDone.
 ## Before opening a change
 
 - Keep Core vendor-neutral. Host-specific packaging must remain a thin adapter.
-- Preserve explicit activation and the read-only repository boundary.
+- Preserve explicit activation, read-only Quick/Deep, and the scoped write
+  boundary for explicitly saved Onboard guides.
 - Add rules only for demonstrated failures or clear safety requirements.
 - Keep `SKILL.md` concise and route mode-specific detail to direct references.
 - Do not include private repository content, credentials, or real evaluation

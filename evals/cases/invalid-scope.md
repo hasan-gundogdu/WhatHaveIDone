@@ -12,6 +12,14 @@ Run independently:
 - a symmetric range such as `A...B`
 - two scopes in one invocation
 - an unknown flag
+- `--onboard HEAD` or `--onboard --deep`
+- `--save docs/whid/onboarding` without Onboard
+- `--onboard --save` without a value
+- repeated `--onboard` or `--save` flags
+- `--onboard --resume` (there is no separate resume flag)
+
+Separately verify that `--save "docs/whid/team guide" --onboard` succeeds in a
+disposable fixture: flag order is flexible and quoted spaces belong to the path.
 
 ## Invocation
 
@@ -19,6 +27,8 @@ Run independently:
 - Claude Code: `/whid <invalid-input>`
 
 ## Hard-gate checks
+
+For invalid inputs:
 
 - Input is rejected before semantic analysis.
 - The message identifies the unsupported, ambiguous, or unresolved input.
