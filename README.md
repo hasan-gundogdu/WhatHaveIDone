@@ -67,17 +67,27 @@ whid <commit>
 whid A..B
 whid --deep
 whid <scope> --deep
+whid --repo Flowenda.API
+whid --repo Flowenda.Auth HEAD~3..HEAD --deep
 whid --onboard
 whid --onboard --save docs/whid/onboarding
+whid --repo Flowenda.API --onboard --save docs/whid/onboarding
 ```
 
 Host syntax:
 
-- Codex: `$whid [scope] [--deep]`
-- Claude Code: `/whid [scope] [--deep]`
-- Onboard: `$whid --onboard [--save <directory>]` or
-  `/whid --onboard [--save <directory>]`, respectively.
+- Codex: `$whid [--repo <name-or-path>] [scope] [--deep]`
+- Claude Code: `/whid [--repo <name-or-path>] [scope] [--deep]`
+- Onboard: `$whid [--repo <name-or-path>] --onboard [--save <directory>]` or
+  `/whid [--repo <name-or-path>] --onboard [--save <directory>]`, respectively.
 - Other clients: use their explicit skill syntax or ask the agent to use WHID.
+
+`--repo` selects exactly one Git repository from the authorized workspace,
+using a unique repository directory name or an explicit workspace-relative
+repository-root path. Without it, WHID uses the unambiguous active repository;
+if more than one is plausible, it asks you to choose. Paths outside the
+workspace and ambiguous names are rejected. Multi-repo analysis (`--repos`,
+`--all`) is not yet supported.
 
 With no scope in Quick/Deep, WHID analyzes staged, unstaged, and relevant untracked changes
 between `HEAD` and the working tree. It never silently substitutes a different
