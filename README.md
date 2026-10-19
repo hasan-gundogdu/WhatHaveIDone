@@ -69,6 +69,9 @@ whid --deep
 whid <scope> --deep
 whid --repo Flowenda.API
 whid --repo Flowenda.Auth HEAD~3..HEAD --deep
+whid --repos Flowenda.API,Flowenda.Auth
+whid --repos Flowenda.API,Flowenda.Auth --deep
+whid --all --deep
 whid --onboard
 whid --onboard --save docs/whid/onboarding
 whid --repo Flowenda.API --onboard --save docs/whid/onboarding
@@ -76,8 +79,8 @@ whid --repo Flowenda.API --onboard --save docs/whid/onboarding
 
 Host syntax:
 
-- Codex: `$whid [--repo <name-or-path>] [scope] [--deep]`
-- Claude Code: `/whid [--repo <name-or-path>] [scope] [--deep]`
+- Codex: `$whid [--repo <name-or-path> | --repos <names> | --all] [scope] [--deep]`
+- Claude Code: `/whid [--repo <name-or-path> | --repos <names> | --all] [scope] [--deep]`
 - Onboard: `$whid [--repo <name-or-path>] --onboard [--save <directory>]` or
   `/whid [--repo <name-or-path>] --onboard [--save <directory>]`, respectively.
 - Other clients: use their explicit skill syntax or ask the agent to use WHID.
@@ -87,7 +90,12 @@ using a unique repository directory name or an explicit workspace-relative
 repository-root path. Without it, WHID uses the unambiguous active repository;
 if more than one is plausible, it asks you to choose. Paths outside the
 workspace and ambiguous names are rejected. Multi-repo analysis (`--repos`,
-`--all`) is not yet supported.
+`--all`) is opt-in for Quick/Deep working-tree analysis: `--repos` accepts
+comma-separated unique repository names or paths, while `--all` selects the
+complete discoverable authorized workspace set. They require at least two
+repositories, reject unresolved/ambiguous entries, and do not accept historical
+Git scopes or `--onboard`. Cross-repo findings require evidence; independent
+Git histories are never treated as a shared timeline.
 
 With no scope in Quick/Deep, WHID analyzes staged, unstaged, and relevant untracked changes
 between `HEAD` and the working tree. It never silently substitutes a different
