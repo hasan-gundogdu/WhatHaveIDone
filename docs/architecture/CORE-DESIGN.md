@@ -25,9 +25,10 @@ its behavior.
 WHID is explicitly activated. Normal coding, review, commit, or refactoring
 requests must not trigger it or cause an unsolicited WHID suggestion.
 
-All modes accept one optional `--repo <name-or-path>` selector; Quick/Deep
-also accept `--repos <repo1,repo2,...>` or `--all` for multi-repository working-tree
-analysis. Repository selectors are mutually exclusive. Quick/Deep
+All modes accept one optional `--repo <name-or-path>` selector. Quick/Deep
+also accept `--repos <repo1,repo2,...>` or `--all` for working-tree analysis
+of the explicitly selected workspace repositories. Repository selectors are
+mutually exclusive. `--all` works with one discovered repository. Quick/Deep
 accept one optional Git scope plus one optional `--deep` flag. Quick
 is the default. Onboard accepts `--onboard` and an optional `--save <directory>`;
 it rejects scopes and `--deep`, and `--save` is invalid in change-analysis modes.
@@ -73,8 +74,9 @@ Every stage has an observable completion condition:
   it is valid for Quick, Deep, and Onboard. A unique directory basename from
   discoverable workspace repositories or an explicit workspace-root-relative
   directory path can identify a repository.
-- Without it, use only an unambiguous host active repo. If the active repo is
-  unknown and multiple repos are plausible, ask rather than silently choosing.
+- Only when no repository selector is supplied, use an unambiguous host active
+  repo. If the active repo is unknown and multiple roots are plausible, ask
+  rather than silently choosing.
 - Limit discovery to the authorized workspace and repositories explicitly
   provided by the user. Reject out-of-workspace paths, duplicate name matches,
   nonexistent or non-root paths, bare repositories, and unsupported multi-repo
@@ -82,15 +84,18 @@ Every stage has an observable completion condition:
 - All reports identify the selected repository. Onboard `--save` relative paths
   resolve from that repo root. Nested Git repositories are not traversed.
 - Multi-repo Quick/Deep opt in with `--repos` (two or more distinct, resolvable
-  entries) or `--all` (all discovered authorized workspace Git roots). Do not
-  infer undiscovered repositories from the filesystem. Both reject Git revision
-  scopes and Onboard; cross-repository historical and onboarding flows are deferred.
+  entries) or `--all` (all discovered authorized workspace Git roots, including
+  a singleton). Do not infer undiscovered repositories from the filesystem.
+  Reject `--all` only for an empty or ambiguous discovery set, not a singleton.
+  Both selectors reject Git revision scopes and Onboard; cross-repository
+  historical and onboarding flows are deferred.
 - For each repository independently inventory HEAD → working tree; anchor
   read-only Git and inspection to that root. Synthesize architectural and
-  integration effects only with evidence across selected repositories. Mark
-  unconfirmed links `INFERRED` or `UNKNOWN`; do not interpret independent Git
-  histories as one timeline. Attribute claims, limits, and test execution to
-  their repository. No selected repo may silently drop out of the analysis.
+  integration effects only with evidence across two or more selected roots:
+  distinguish provider contract, consumer expectation, and unverified deployment
+  compatibility. Mark unconfirmed links `INFERRED` or `UNKNOWN`; do not interpret
+  independent Git histories as one timeline. Attribute claims, limits, unchanged
+  repositories, and test execution to their roots. Never silently omit a target.
 
 ## Scope model
 

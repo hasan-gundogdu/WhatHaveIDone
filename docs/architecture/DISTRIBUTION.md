@@ -14,10 +14,12 @@ skill directory. No generated vendor copy is committed.
 
 Host invocation syntax is documentation, not Core logic:
 
-- Codex: `$whid [scope] [--deep]`
-- Claude Code: `/whid [scope] [--deep]`
-- Onboard: `$whid --onboard [--save <directory>]` or
-  `/whid --onboard [--save <directory>]`, respectively.
+- Codex: `$whid [--repo <name-or-path> | --repos <names> | --all] [scope] [--deep]`
+- Claude Code: `/whid [--repo <name-or-path> | --repos <names> | --all] [scope] [--deep]`
+- Onboard: `$whid [--repo <name-or-path>] --onboard [--save <directory>]` or
+  `/whid [--repo <name-or-path>] --onboard [--save <directory>]`, respectively.
+- Git scopes may accompany only single-repository analysis; `--repos`/`--all`
+  are working-tree Quick/Deep only. `--all` is valid even with one discoverable root.
 - Other hosts: explicit skill invocation or an explicit natural-language WHID
   request.
 

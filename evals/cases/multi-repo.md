@@ -12,7 +12,7 @@ In an authorized multi-root workspace, prepare two independent Git roots `auth/`
 5. Never treat commit hashes in independent repositories as one shared timeline; cross-repo relationship claims distinguish CONFIRMED, INFERRED and UNKNOWN.
 6. `--repos auth,missing`, duplicate roots, ambiguous names, empty items, and unsupported comma-containing repository names fail before source reads, without partial analysis.
 7. `--repos auth,api HEAD`, `--all A..B`, `--repos auth,api --onboard`, and multiple selector flags fail before writes or analysis.
-8. `--all` with only one repository and `--repos auth` with one entry fail clearly.
+8. `--all` with only one discoverable repository succeeds as a single-repo working-tree analysis without cross-repo assertions; `--all` with zero discovered repositories and `--repos auth` with one entry fail clearly.
 9. Repositories outside the authorized workspace, nested repositories, and submodules are never traversed implicitly; Git state remains unchanged in all selected and unselected repos.
 10. Verify no tested source or private data is copied into evaluation artifacts. Note any evidenced limits and undiscovered repos explicitly.
 

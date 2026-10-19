@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Requires Git and repository inspection capabilities. Saved onboarding additionally requires filesystem writes and SHA-256 hashing in the host environment.
 metadata:
   author: hasan-gundogdu
-  version: "0.2.0-alpha.1"
+  version: "0.2.0-alpha.2"
 ---
 
 # WhatHaveIDone
@@ -41,9 +41,12 @@ whid --repo <name-or-path> --onboard [--save <directory>]
 
 Treat flag order as flexible. Repository selectors are mutually exclusive:
 `--repo <name-or-path>` for exactly one repository, `--repos <repo1,repo2,...>`
-for two or more, or `--all` for all discovered workspace repositories. Quick/Deep accept at most one Git scope and one `--deep` flag, but multi-repo
-selection accepts only working-tree scope (no Git revisions). Onboard accepts only zero or one `--repo`, one `--onboard` flag and optionally one `--save`
-with a nonempty directory argument (quote paths containing spaces). It accepts
+for two or more, or `--all` for all discovered workspace repositories (one
+repository is valid). Quick/Deep accept at most one Git scope and one `--deep`
+flag, but `--repos` and `--all` accept only working-tree scope (no Git
+revisions). Onboard accepts at most one `--repo`, one `--onboard` flag, and
+optionally one `--save` with a nonempty directory argument (quote paths
+containing spaces). It accepts
 neither a Git scope nor `--deep`. `--save` is Onboard-only. Reject duplicate or
 unknown flags, missing arguments, `A...B`, multiple scopes, and unresolved
 revisions or repositories with a clear error before analysis or writes. Never substitute a mode
@@ -78,18 +81,20 @@ inside them.
 
 ## Resolve the repository (all modes)
 
-Resolve the target repository *before* inspecting source content, resolving Git
-revisions, or writing an Onboard guide. `--repo` selects one repository; it is
-not a commit scope. It never implies analyzing multiple repositories. `--repos` and `--all` opt in
-to multi-repository Quick/Deep analysis; neither changes Git state.
+Resolve the target repository set *before* inspecting source content, resolving
+Git revisions, or writing an Onboard guide. `--repo` selects one repository and
+is not a commit scope. `--repos` and `--all` explicitly select multiple
+repositories when present; `--all` may select just one. No selector ever
+changes Git state.
 
 - Discover only repositories exposed by the host's current workspace or
   explicitly supplied in the user request; do not recursively crawl arbitrary
   parent directories, sibling directories, or the user's filesystem.
-- Without `--repo`, use the host's unambiguous active repository, if there is
-  one. If multiple repositories are plausible and no active repository can be
-  established, stop and ask which repository to use. Do not choose alphabetically,
-  use the first discovered, or silently analyze the workspace container.
+- Only when **none** of `--repo`, `--repos`, or `--all` is supplied, use the
+  host's unambiguous active repository, if there is one. If multiple roots are
+  plausible and no active repository is established, stop and ask which to
+  use. Never choose the first discovered or silently analyze a workspace
+  container.
 - With `--repo`, accept an exact unique repository directory basename among
   discoverable workspace repositories, or an explicit directory path. Paths
   resolve from the host's workspace root when available, otherwise from the
@@ -114,32 +119,35 @@ to multi-repository Quick/Deep analysis; neither changes Git state.
   repository names/paths are not supported.
 - For `--all`, enumerate the finite set of repositories exposed by the current
   authorized workspace, without recursively exploring arbitrary directories.
-  Require at least two; if workspace boundaries or the discovered set are
-  ambiguous, fail with an actionable message rather than assuming completeness.
-  Explicitly state the selected roots before source inspection.
+  Require at least one; a single discovered repo is analyzed normally, without
+  invented cross-repo findings. If workspace boundaries or the discovered set
+  are ambiguous, fail rather than claiming complete coverage. Explicitly state
+  every selected root before source inspection.
 - Multi-repository selection supports Quick and Deep working-tree analysis only.
   Reject `--onboard`, `--save`, commit scopes, and revision ranges in multi-repo
   invocations before reading content or writing anything. Each selected repo has
   its own HEAD and staged, unstaged, relevant untracked inventory; never compare
   commit IDs or file paths between repositories as if they share a Git history.
-- Analyze each repository independently using the existing Quick/Deep evidence
-  discipline, then add a concise cross-repository impact synthesis. Derive
-  connections only from inspected API contracts, callers, dependencies, shared
-  configurations, integrations, and explicit source evidence. Mark unverified
-  relations `INFERRED` or `UNKNOWN`; never claim a deployed end-to-end flow was
-  verified only because file names look related. Name repositories alongside
-  evidence and distinguish direct changes from potential integration effects.
+- Analyze each selected repository independently using the existing Quick/Deep
+  evidence discipline. For two or more selected roots, synthesize only evidenced
+  cross-repository effects: inspect actual provider contracts and consumer
+  expectations, callers, dependencies, configurations, or integrations. Show
+  which changed behavior connects them and what remains unverified. Mark
+  unverified links `INFERRED` or `UNKNOWN`. Local source compatibility is not
+  proof of deployment compatibility; do not invent runtime connections from
+  matching names. Attribute sources and effects to their repositories.
 - Bound analysis to selected roots; do not traverse unselected repositories,
   nested Git repos, or submodules. Provide one coherent report with repository
   identities, per-repo scope/limits, prioritized logical changes, cross-repo
   findings (when evidenced), and tests-execution status for each repository.
-  State when no evidenced cross-repo relationship was found.
+  Explicitly list selected repositories with no relevant changes. When two or
+  more roots are selected but no cross-repo relationship is evidenced, say so.
 
 ## Route the work
 
-For multi-repository Quick/Deep, first inventory each selected repository under
-the rules above, then follow the appropriate Quick/Deep reporting contract with
-repository-attributed evidence and a bounded cross-repository synthesis.
+For `--repos`/`--all` Quick/Deep, inventory each selected repository under the
+rules above, then follow the Quick/Deep contract with repository-attributed
+evidence. Synthesize cross-repository effects only for two or more roots.
 For Onboard, follow the Onboard contract, then the shared Tests and delivery
 rules below. Its scope is the current working-tree project, not a Before/After
 diff. Do not apply the change-analysis pipeline to it. For Quick/Deep, follow

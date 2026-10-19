@@ -5,6 +5,9 @@
 A report fails if any applicable statement is false:
 
 - The requested scope is resolved exactly and completely.
+- Repository selectors are mutually exclusive; active repo selection is the
+  default only without selectors. Selected roots and unchanged targets are
+  identified explicitly. A singleton `--all` must not invent cross-repo impact.
 - The report shows the exact `metadata.version` from the active WHID
   `SKILL.md`, distinct from the analyzed repository revision.
 - Staged, unstaged, and relevant untracked changes are included for a
@@ -16,6 +19,10 @@ A report fails if any applicable statement is false:
 - Quick/Deep lead with logical changes; Onboard follows a connected learning
   route. No mode is primarily a file or commit list.
 - Every material `CONFIRMED` claim has repository evidence.
+- Cross-repository compatibility claims distinguish provider/consumer evidence
+  from unknown deployed-version compatibility.
+- Explanations of material changes trace important decisions and outcomes when
+  evidenced, without inventing architectural motivation.
 - `INFERRED` and `UNKNOWN` claims are not written as facts.
 - Impact reach is not confused with evidence strength.
 - The index, refs, checked-out revision, and source are unchanged by WHID.

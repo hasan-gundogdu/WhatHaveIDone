@@ -53,7 +53,9 @@ npx skills update whid --global
 npx skills remove --global whid
 ```
 
-The verified `skills` 1.7.2 CLI supports updating WHID by name. Use
+The verified `skills` 1.7.2 CLI supports updating WHID by name.
+For a manually copied skill, replace the installed `skills/whid/` contents
+with those from the desired commit instead of expecting the CLI to update it. Use
 `npx skills list --global` for a non-updating inventory.
 
 ## Use
@@ -71,6 +73,7 @@ whid --repo Flowenda.API
 whid --repo Flowenda.Auth HEAD~3..HEAD --deep
 whid --repos Flowenda.API,Flowenda.Auth
 whid --repos Flowenda.API,Flowenda.Auth --deep
+whid --all
 whid --all --deep
 whid --onboard
 whid --onboard --save docs/whid/onboarding
@@ -87,14 +90,15 @@ Host syntax:
 
 `--repo` selects exactly one Git repository from the authorized workspace,
 using a unique repository directory name or an explicit workspace-relative
-repository-root path. Without it, WHID uses the unambiguous active repository;
+repository-root path. With no selector, WHID uses the unambiguous active repository;
 if more than one is plausible, it asks you to choose. Paths outside the
 workspace and ambiguous names are rejected. Multi-repo analysis (`--repos`,
 `--all`) is opt-in for Quick/Deep working-tree analysis: `--repos` accepts
 comma-separated unique repository names or paths, while `--all` selects the
-complete discoverable authorized workspace set. They require at least two
-repositories, reject unresolved/ambiguous entries, and do not accept historical
-Git scopes or `--onboard`. Cross-repo findings require evidence; independent
+complete discoverable authorized workspace set, even a single repository.
+`--repos` requires two distinct roots; `--all` requires one and rejects
+ambiguous discovery. Both reject unresolved selections and do not accept
+historical Git scopes or `--onboard`. Cross-repo findings require evidence; independent
 Git histories are never treated as a shared timeline.
 
 With no scope in Quick/Deep, WHID analyzes staged, unstaged, and relevant untracked changes
@@ -136,7 +140,7 @@ are reported. HTML rendering is outside v0.2.
 
 ## Status
 
-The current version is `0.2.0-alpha.1`. A stable `v0.2.0` tag will be
+The current version is `0.2.0-alpha.2`. A stable `v0.2.0` tag will be
 created only after the cross-agent evaluation matrix passes all hard gates.
 Reports display the exact active Core version so results can be traced to the
 contract that produced them. Onboarding evaluation scenarios are defined;

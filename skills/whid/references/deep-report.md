@@ -46,14 +46,25 @@ blocks:
 2. why it matters
 3. where it fits
 
-Do not explain every line or every language feature.
+For a material changed flow, connect its input/trigger, decisive conditions,
+important state or data transformations, failure path when relevant, and
+observable outcome. Identify actual caller/consumer or runtime composition
+only when supported by inspected evidence. Do not explain every line or every
+language feature.
 
 ## Architecture and impact
 
 Assess architecture from real boundaries and dependency flow. State the
 evidence and use `CONSISTENT`, `QUESTIONABLE`, `VIOLATION`, or `UNKNOWN` only
 when helpful. Keep `DIRECT`, `INDIRECT`, and `POTENTIAL` impact independent of
-`CONFIRMED`, `INFERRED`, and `UNKNOWN` evidence strength.
+`CONFIRMED`, `INFERRED`, and `UNKNOWN` evidence strength. Separate observed
+technical effect, documented design intent, and evaluative tradeoffs; do not
+attribute an unrecorded motivation to the author.
+
+For changes spanning repositories, identify the provider-side contract and
+consumer-side expectation, plus evidence for their compatibility. Distinguish
+source-level alignment from unverified runtime deployments; do not assume the
+same versions are running together.
 
 ## Tests, risks, and learning
 
@@ -63,7 +74,9 @@ Include only plausible, change-specific risks and edge cases.
 
 Teach concepts necessary to understand decisions introduced by the change.
 Classify internally as essential, useful, or incidental; publish essential and
-useful concepts only.
+useful concepts only. Adapt depth to explicitly known reader expertise and
+learning goals; otherwise use concise technical explanations tied to actual
+code. Avoid generic textbook lessons and unsupported explanations of intent.
 
 Create 3–5 questions from the real change when the analysis identifies at least
 three distinct behaviors, tradeoffs, risks, or test gaps. Questions should

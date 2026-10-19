@@ -1,8 +1,11 @@
 # Quick Report Contract
 
 Quick should let the developer regain control of the change in roughly 3–5
-minutes. Aim for about 3–5 critical points, adjusted when the scope is genuinely
-smaller.
+minutes. Aim for about 3–5 critical points **across the whole report**, adjusted when
+the scope is genuinely smaller. With several repositories, prioritize changes
+by behavior and impact instead of allocating 3–5 points per repo. Still name
+all selected repositories, including those with no relevant changes; omit
+cross-repo findings when fewer than two roots were selected.
 
 Show the exact WHID Core version from `SKILL.md` frontmatter directly below the
 report title. Keep it separate from the analyzed repository's revision.

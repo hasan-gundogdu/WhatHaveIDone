@@ -19,7 +19,7 @@ Run each case in clean Codex and Claude Code sessions with the same WHID revisio
 6. **No selector, ambiguous workspace:** With no unambiguous active repo, `whid` stops and asks which one to analyze without reading source contents.
 7. **Duplicate basename:** A non-unique `--repo service-api` fails before content analysis; a sufficiently precise explicit path can disambiguate it.
 8. **Invalid paths:** Nonexistent, non-root, inaccessible, bare, and out-of-workspace repository selections fail without fallback, source reads, or writes.
-9. **Forbidden multi-repo:** `--repos` and `--all` fail clearly, without silently selecting a repo.
+9. **Selector compatibility:** `--repo service-auth --all`, `--repo service-auth --repos service-auth,service-api`, or `--repo` without a value fail before source reads; `--repos` and `--all` alone are supported for Quick/Deep under the dedicated [multi-repository cases](multi-repo.md).
 10. **Safety:** Neither nested repositories nor submodules are traversed implicitly; Quick/Deep and chat-only Onboard do not mutate any Git or source state.
 
 Record resolved root, host workspace interpretation, chosen Git scope, pre/post state, and any observed ambiguity. The same behavioral acceptance criteria apply to both agents. These are scenarios, **not** evidence that cross-agent evaluation has passed.
