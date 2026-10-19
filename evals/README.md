@@ -48,6 +48,7 @@ an incomplete manifest.
 - [Architecture-sensitive Deep](cases/architecture-sensitive.md)
 - [Invalid scope](cases/invalid-scope.md)
 - [Repository selection](cases/repository-selection.md)
+- [Multi-repository Quick/Deep](cases/multi-repo.md)
 - [Onboard learning route](cases/onboard.md)
 - [Onboard refresh and resume](cases/onboard-state.md)
 
