@@ -52,8 +52,14 @@ chapter template.
 7. **Practice and recall:** a small code-navigation exercise and questions that
    require explaining this project's behavior, tradeoffs, or change impact.
 
-Introduce a term before relying on it; link back when it recurs. A short recap
-should connect each chapter to the previous one and the next step. Use diagrams
+Introduce a term before relying on it; link back when it recurs. Adapt technical
+depth to the user's explicitly stated expertise and learning goals. Explain
+new concepts only where they are needed to trace this project's behavior; do
+not pad experienced-developer routes with introductory tutorials. For a key
+operation, link the trigger, decisions, data/state changes and observable result
+through concrete code evidence. Keep documented intent separate from confirmed
+implementation and technical evaluation. A short recap should connect each
+chapter to the previous one and the next step. Use diagrams
 only when they clarify a real flow. Portable Markdown is the canonical output;
 Mermaid or plain-text diagrams may supplement prose. HTML is outside this mode.
 
