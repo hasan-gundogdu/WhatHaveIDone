@@ -25,10 +25,12 @@ its behavior.
 WHID is explicitly activated. Normal coding, review, commit, or refactoring
 requests must not trigger it or cause an unsolicited WHID suggestion.
 
-Quick/Deep accept one optional Git scope plus one optional `--deep` flag. Quick
+All modes accept one optional `--repo <name-or-path>` selector. Quick/Deep
+accept one optional Git scope plus one optional `--deep` flag. Quick
 is the default. Onboard accepts `--onboard` and an optional `--save <directory>`;
 it rejects scopes and `--deep`, and `--save` is invalid in change-analysis modes.
-Duplicate/unknown flags and missing values fail before analysis or writes.
+Duplicate/unknown flags, ambiguous repository selection, and missing values
+fail before analysis or writes.
 
 Reports use the user's language and default to chat. Quick/Deep remain read-only
 and may be saved only outside the repository. An explicit saved-Onboard request
@@ -40,6 +42,7 @@ No mode mutates Git state. Tests/setup require a separate request.
 ```text
 explicit request
   → parse mode and scope
+  → resolve exactly one repository within the authorized workspace
   → validate Git scope without mutation
   → establish Before and After
   → discover only relevant repository context
@@ -51,7 +54,9 @@ explicit request
 
 Every stage has an observable completion condition:
 
-1. Parsing ends with exactly one supported scope and one mode.
+1. Parsing ends with exactly one supported Git scope, one mode, and at most
+   one repository selector. Repository resolution selects exactly one root or
+   stops with an actionable ambiguity/error.
 2. Scope resolution ends with explicit Before/After states and a complete
    changed-path inventory, including relevant untracked files.
 3. Discovery ends when enough context exists to explain the highest-impact
@@ -59,6 +64,22 @@ Every stage has an observable completion condition:
 4. Analysis ends when important claims have evidence labels and limitations.
 5. Delivery ends with a non-mutating report and an explicit test-execution
    statement.
+
+## Repository selection
+
+- `--repo` is an independent repository selector, not a Git revision scope;
+  it is valid for Quick, Deep, and Onboard. A unique directory basename from
+  discoverable workspace repositories or an explicit workspace-root-relative
+  directory path can identify a repository.
+- Without it, use only an unambiguous host active repo. If the active repo is
+  unknown and multiple repos are plausible, ask rather than silently choosing.
+- Limit discovery to the authorized workspace and repositories explicitly
+  provided by the user. Reject out-of-workspace paths, duplicate name matches,
+  nonexistent or non-root paths, bare repositories, and unsupported multi-repo
+  selectors. Anchor subsequent Git and filesystem reads to the resolved root.
+- All reports identify the selected repository. Onboard `--save` relative paths
+  resolve from that repo root. Nested Git repositories are not traversed.
+- Cross-repository analysis (`--repos` or `--all`) remains outside v0.2.
 
 ## Scope model
 
