@@ -25,7 +25,9 @@ its behavior.
 WHID is explicitly activated. Normal coding, review, commit, or refactoring
 requests must not trigger it or cause an unsolicited WHID suggestion.
 
-All modes accept one optional `--repo <name-or-path>` selector. Quick/Deep
+All modes accept one optional `--repo <name-or-path>` selector; Quick/Deep
+also accept `--repos <repo1,repo2,...>` or `--all` for multi-repository working-tree
+analysis. Repository selectors are mutually exclusive. Quick/Deep
 accept one optional Git scope plus one optional `--deep` flag. Quick
 is the default. Onboard accepts `--onboard` and an optional `--save <directory>`;
 it rejects scopes and `--deep`, and `--save` is invalid in change-analysis modes.
@@ -42,7 +44,7 @@ No mode mutates Git state. Tests/setup require a separate request.
 ```text
 explicit request
   → parse mode and scope
-  → resolve exactly one repository within the authorized workspace
+  → resolve the exact selected set of repositories within the authorized workspace
   → validate Git scope without mutation
   → establish Before and After
   → discover only relevant repository context
@@ -55,7 +57,7 @@ explicit request
 Every stage has an observable completion condition:
 
 1. Parsing ends with exactly one supported Git scope, one mode, and at most
-   one repository selector. Repository resolution selects exactly one root or
+   one repository selector. Repository resolution selects exactly the requested roots or
    stops with an actionable ambiguity/error.
 2. Scope resolution ends with explicit Before/After states and a complete
    changed-path inventory, including relevant untracked files.
@@ -79,7 +81,16 @@ Every stage has an observable completion condition:
   selectors. Anchor subsequent Git and filesystem reads to the resolved root.
 - All reports identify the selected repository. Onboard `--save` relative paths
   resolve from that repo root. Nested Git repositories are not traversed.
-- Cross-repository analysis (`--repos` or `--all`) remains outside v0.2.
+- Multi-repo Quick/Deep opt in with `--repos` (two or more distinct, resolvable
+  entries) or `--all` (all discovered authorized workspace Git roots). Do not
+  infer undiscovered repositories from the filesystem. Both reject Git revision
+  scopes and Onboard; cross-repository historical and onboarding flows are deferred.
+- For each repository independently inventory HEAD → working tree; anchor
+  read-only Git and inspection to that root. Synthesize architectural and
+  integration effects only with evidence across selected repositories. Mark
+  unconfirmed links `INFERRED` or `UNKNOWN`; do not interpret independent Git
+  histories as one timeline. Attribute claims, limits, and test execution to
+  their repository. No selected repo may silently drop out of the analysis.
 
 ## Scope model
 
