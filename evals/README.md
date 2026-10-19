@@ -47,6 +47,7 @@ an incomplete manifest.
 - [Untracked file](cases/untracked-file.md)
 - [Architecture-sensitive Deep](cases/architecture-sensitive.md)
 - [Invalid scope](cases/invalid-scope.md)
+- [Repository selection](cases/repository-selection.md)
 - [Onboard learning route](cases/onboard.md)
 - [Onboard refresh and resume](cases/onboard-state.md)
 
