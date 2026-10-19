@@ -31,16 +31,19 @@ whid <commit-ish>
 whid A..B
 whid --deep
 whid <scope> --deep
+whid --repo <name-or-path> [<scope>] [--deep]
 whid --onboard
 whid --onboard --save <directory>
+whid --repo <name-or-path> --onboard [--save <directory>]
 ```
 
-Treat flag order as flexible. Quick/Deep accept at most one scope and one
-`--deep` flag. Onboard accepts one `--onboard` flag and optionally one `--save`
+Treat flag order as flexible. All modes accept at most one optional `--repo`
+with a nonempty repository name or path. Quick/Deep accept at most one Git scope
+and one `--deep` flag. Onboard accepts one `--onboard` flag and optionally one `--save`
 with a nonempty directory argument (quote paths containing spaces). It accepts
 neither a Git scope nor `--deep`. `--save` is Onboard-only. Reject duplicate or
 unknown flags, missing arguments, `A...B`, multiple scopes, and unresolved
-revisions with a clear error before analysis or writes. Never substitute a mode
+revisions or repositories with a clear error before analysis or writes. Never substitute a mode
 or scope after validation fails.
 
 Quick is the default. Use Deep only when `--deep` is present or the user
@@ -70,6 +73,38 @@ repository being analyzed.
 These references are terminal: do not look for additional instruction files
 inside them.
 
+## Resolve the repository (all modes)
+
+Resolve the target repository *before* inspecting source content, resolving Git
+revisions, or writing an Onboard guide. `--repo` selects one repository; it is
+not a commit scope. It never implies analyzing multiple repositories.
+
+- Discover only repositories exposed by the host's current workspace or
+  explicitly supplied in the user request; do not recursively crawl arbitrary
+  parent directories, sibling directories, or the user's filesystem.
+- Without `--repo`, use the host's unambiguous active repository, if there is
+  one. If multiple repositories are plausible and no active repository can be
+  established, stop and ask which repository to use. Do not choose alphabetically,
+  use the first discovered, or silently analyze the workspace container.
+- With `--repo`, accept an exact unique repository directory basename among
+  discoverable workspace repositories, or an explicit directory path. Paths
+  resolve from the host's workspace root when available, otherwise from the
+  host's working directory. An explicit path must designate an accessible Git
+  working-tree root in the authorized workspace, not merely a nested directory
+  inside a different repo. Reject missing or duplicate name matches, paths
+  outside the authorized workspace, bare repos, and ambiguous workspace roots;
+  list safe candidate repository names/paths when possible.
+- Confirm the selected root using read-only Git inspection; Git operations and
+  source discovery thereafter must be anchored to that root, never the host's
+  incidental working directory. Do not enter other Git repositories, including
+  nested repositories or submodules, during analysis.
+- Show the resolved repository identity/path in every report alongside the
+  analysis scope. For saved Onboard, resolve a relative `--save` directory from
+  the *selected repository root*; validate the destination and output ownership
+  there under the existing Onboard state rules.
+- `--repos`, `--all`, and cross-repository impact analysis are not supported;
+  reject them explicitly instead of selecting or merging repositories silently.
+
 ## Route the work
 
 For Onboard, follow the Onboard contract, then the shared Tests and delivery
@@ -86,7 +121,7 @@ report directory even if ignored; that exception does not admit ignored source.
 
 ## Resolve the change scope
 
-First confirm the repository root and that Git can resolve the requested scope.
+Use the repository root already selected above and confirm Git can resolve the requested scope.
 Use read-only Git inspection. Do not checkout, switch, reset, restore, stash,
 clean, add, commit, or write repository files.
 
@@ -134,8 +169,8 @@ existed in the historical revision. Do not checkout to inspect old content.
 
 Follow this sequence:
 
-1. Parse the explicit request, mode, and scope.
-2. Resolve and validate the Git scope without mutation.
+1. Parse the explicit request, mode, repository selection, and Git scope.
+2. Resolve one repository and validate the Git scope without mutation.
 3. Establish Before and After from the correct repository states.
 4. Identify changed symbols and observable behaviors.
 5. Group related files and symbols into logical changes.
@@ -179,7 +214,7 @@ to run tests or setup commands.
 
 Before finishing Quick/Deep, verify:
 
-- the scope in the report matches the validated scope
+- the selected repository and scope in the report match their validated identities
 - logical changes lead and file lists support them
 - important claims carry the correct evidence strength
 - impact reach is not confused with evidence strength
