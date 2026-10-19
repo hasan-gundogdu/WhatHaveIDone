@@ -102,6 +102,33 @@ if (!fs.existsSync(packageFile)) {
   }
 }
 
+// Catch contract/documentation drift that otherwise passes format validation.
+// These are static consistency checks, not behavioral certification.
+const readText = (file) => fs.readFileSync(path.join(repositoryRoot, file), "utf8");
+const readme = readText("README.md");
+if (skillVersion && !readme.includes(`The current version is \`${skillVersion}\``)) {
+  fail("README.md reports a Core version different from SKILL.md");
+}
+
+for (const file of ["README.md", "docs/architecture/DISTRIBUTION.md"]) {
+  const body = readText(file);
+  for (const selector of ["--repo", "--repos", "--all"]) {
+    if (!body.includes(selector)) fail(`${file} omits the supported ${selector} selector`);
+  }
+}
+
+const selectionCases = readText("evals/cases/repository-selection.md");
+const multiCases = readText("evals/cases/multi-repo.md");
+if (selectionCases.includes("**Forbidden multi-repo:**")) {
+  fail("repository selection eval contradicts supported multi-repo mode");
+}
+if (multiCases.includes("`--all` with only one repository and")) {
+  fail("multi-repo eval still rejects valid single-repository --all");
+}
+if (!multiCases.includes("one discoverable repository succeeds")) {
+  fail("multi-repo eval must cover single-repository --all");
+}
+
 for (const file of markdownFiles(repositoryRoot)) {
   const content = fs.readFileSync(file, "utf8");
   for (const match of content.matchAll(/\[[^\]]+\]\(([^)]+)\)/g)) {
