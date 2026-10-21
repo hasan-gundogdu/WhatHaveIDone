@@ -162,13 +162,27 @@ publisher. The draft exists but is **not submitted or published**. The portal
 reported the blocking finding: “We are not accepting more skills-only
 submissions at this time.” Packaging fixes cannot remove this admission limit.
 It also required privacy and terms URLs, limited default prompts to three,
-and flagged pricing/subscription language in the description. The local package
-was updated for those metadata findings; upload/portal revalidation is still
-required, and the privacy URL must exist on the public source branch first.
+and flagged pricing/subscription language in the description. These metadata
+findings were corrected, the privacy notice and adapters were published to
+`main` in PR #4, and the rebuilt ZIP was uploaded to the same draft. After that
+upload, the portal listed only the skills-only intake limit as a blocking
+metadata finding; metadata and skill scans were still running at observation.
+This is not a completed scan or approval claim.
 
 [Existing OpenAI draft](https://platform.openai.com/plugins/manage/plugins_6ad8b96f3fc4819193ac100db542ad07)
 (publisher access required). Continue this draft if intake reopens; do not
 create duplicate submissions or add an unnecessary MCP server to bypass intake.
+
+The Git-hosted Claude Code marketplace is available from the public repository,
+independently of official directory review:
+
+```text
+claude plugin marketplace add hasan-gundogdu/WhatHaveIDone
+claude plugin install whid@whid-marketplace
+```
+
+Use `/whid:whid` for this plugin installation. The official Claude directory and
+Agensi listings are still pending; no listing URL is claimed for either.
 
 ## Releasing marketplace updates
 
