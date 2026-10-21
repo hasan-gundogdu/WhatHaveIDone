@@ -1,0 +1,38 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "whid",
+  "version": "0.2.0-alpha.2",
+  "description": "Understand repository changes, trace their impact, and learn unfamiliar projects with evidence from code.",
+  "author": {
+    "name": "Hasan Gundogdu",
+    "url": "https://github.com/hasan-gundogdu"
+  },
+  "homepage": "https://github.com/hasan-gundogdu/WhatHaveIDone",
+  "repository": "https://github.com/hasan-gundogdu/WhatHaveIDone",
+  "license": "Apache-2.0",
+  "keywords": ["developer-understanding", "code-ownership", "git", "multi-repo", "onboarding"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "WhatHaveIDone",
+        "shortDescription": "Understand your code changes",
+        "longDescription": "AI wrote the code. Make sure you understand it. WHID explains what changed, how it works, why it matters, and what else it affects. Quick provides a focused ownership recap; Deep adds Before/After behavior, execution flow, architecture reasoning, test evidence, and contextual learning questions. Explicit multi-repository analysis connects provider contracts and consumer expectations using repository evidence. Onboard builds an ordered project learning guide, with optional saved chapter refresh and resume. Open source under Apache-2.0. Requires a coding-agent environment with Git and repository access. This is the 0.2.0-alpha.2 prerelease; cross-agent release certification is pending. Quick/Deep are read-only. Saved Onboard writes only to an explicitly requested report directory. Tests require a separate request. WHID operates through your existing agent and has no WHID-operated backend.",
+        "developerName": "Hasan Gundogdu",
+        "category": "Developer Tools",
+        "capabilities": ["Explain repository changes", "Trace cross-repository impact", "Create project learning guides"],
+        "websiteURL": "https://github.com/hasan-gundogdu/WhatHaveIDone",
+        "supportURL": "https://github.com/hasan-gundogdu/WhatHaveIDone/issues",
+        "privacyPolicyURL": "https://github.com/hasan-gundogdu/WhatHaveIDone/blob/main/PRIVACY.md",
+        "termsOfServiceURL": "https://github.com/hasan-gundogdu/WhatHaveIDone/blob/main/LICENSE",
+        "defaultPrompt": [
+          "Use WHID to explain my working-tree changes.",
+          "Use WHID to deeply explain my latest commit.",
+          "Use WHID to analyze changes across all repositories in this workspace."
+        ],
+        "brandColor": "#0F766E",
+        "composerIcon": "./assets/whid.svg",
+        "logo": "./assets/whid.svg"
+      }
+    }
+  }
+}

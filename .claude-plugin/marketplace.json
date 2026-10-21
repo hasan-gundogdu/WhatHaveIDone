@@ -1,0 +1,12 @@
+{
+  "name": "whid-marketplace",
+  "metadata": { "description": "Free WhatHaveIDone developer understanding skill." },
+  "owner": { "name": "Hasan Gundogdu" },
+  "plugins": [
+    {
+      "name": "whid",
+      "source": "./",
+      "description": "Free, evidence-based repository change understanding and developer onboarding."
+    }
+  ]
+}

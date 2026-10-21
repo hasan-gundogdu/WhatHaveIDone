@@ -10,3 +10,6 @@ evals/.worktrees/
 Thumbs.db
 .idea/
 .vscode/
+
+# Generated marketplace archives and build provenance
+dist/

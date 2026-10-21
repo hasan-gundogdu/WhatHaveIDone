@@ -5,7 +5,9 @@
 - [Core Design](architecture/CORE-DESIGN.md) — canonical skill boundary,
   runtime contract, scope model, and evidence discipline.
 - [Distribution](architecture/DISTRIBUTION.md) — installation, support tiers,
-  portability, validation, and version policy.
+  portability, validation, version policy, and free marketplace packaging/updates.
+- [Package README](../packaging/README.md) — standalone usage shipped in plugin ZIPs.
+- [Privacy](../PRIVACY.md) — repository access, host data handling, and saved reports.
 - [Onboard Report](../skills/whid/references/onboard-report.md) — ordered learning
   route, chapter content, and completion criteria.
 - [Onboarding State](../skills/whid/references/onboarding-state.md) — saved output,

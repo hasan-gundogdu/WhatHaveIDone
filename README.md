@@ -140,6 +140,11 @@ are reported. HTML rendering is outside v0.2.
 
 ## Status
 
+Free marketplace packages can be built with `npm run package:marketplaces`.
+See [distribution and updates](docs/architecture/DISTRIBUTION.md#free-marketplace-packages)
+for the Codex, Claude, and Agensi submission paths. Package preparation does
+not imply a live or approved marketplace listing.
+
 The current version is `0.2.0-alpha.2`. A stable `v0.2.0` tag will be
 created only after the cross-agent evaluation matrix passes all hard gates.
 Reports display the exact active Core version so results can be traced to the
