@@ -165,9 +165,9 @@ It also required privacy and terms URLs, limited default prompts to three,
 and flagged pricing/subscription language in the description. These metadata
 findings were corrected, the privacy notice and adapters were published to
 `main` in PR #4, and the rebuilt ZIP was uploaded to the same draft. After that
-upload, the portal listed only the skills-only intake limit as a blocking
-metadata finding; metadata and skill scans were still running at observation.
-This is not a completed scan or approval claim.
+upload, the skill scan completed with “Checks passed”; the portal lists only
+the skills-only intake limit as a blocking metadata finding. This is a passed
+automated skill scan, not directory review, approval, or publication.
 
 [Existing OpenAI draft](https://platform.openai.com/plugins/manage/plugins_6ad8b96f3fc4819193ac100db542ad07)
 (publisher access required). Continue this draft if intake reopens; do not
@@ -181,8 +181,12 @@ claude plugin marketplace add hasan-gundogdu/WhatHaveIDone
 claude plugin install whid@whid-marketplace
 ```
 
-Use `/whid:whid` for this plugin installation. The official Claude directory and
-Agensi listings are still pending; no listing URL is claimed for either.
+Use `/whid:whid` for this plugin installation. On 2026-10-21, the official
+Claude submission portal showed “Directory submissions need a paid plan” for
+the publisher's current Free account. It requires Pro, Max, Team, or Enterprise
+to submit; the intended WHID listing remains free. No paid upgrade was started.
+The official Claude directory and Agensi listings are still pending; no listing
+URL is claimed for either.
 
 ## Releasing marketplace updates
 
