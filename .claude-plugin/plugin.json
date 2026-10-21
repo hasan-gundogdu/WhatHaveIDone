@@ -1,0 +1,13 @@
+{
+  "name": "whid",
+  "version": "0.2.0-alpha.2",
+  "description": "Understand repository changes, trace their impact, and learn unfamiliar projects with evidence from code.",
+  "author": {
+    "name": "Hasan Gundogdu",
+    "url": "https://github.com/hasan-gundogdu"
+  },
+  "homepage": "https://github.com/hasan-gundogdu/WhatHaveIDone",
+  "repository": "https://github.com/hasan-gundogdu/WhatHaveIDone",
+  "license": "Apache-2.0",
+  "keywords": ["developer-understanding", "code-ownership", "git", "multi-repo", "onboarding"]
+}

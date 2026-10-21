@@ -4,7 +4,8 @@
   "private": true,
   "description": "Repository checks for the WhatHaveIDone Agent Skill",
   "scripts": {
-    "validate": "node scripts/validate-repository.mjs"
+    "validate": "node scripts/validate-repository.mjs",
+    "package:marketplaces": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-marketplace-packages.ps1"
   },
   "license": "Apache-2.0"
 }
