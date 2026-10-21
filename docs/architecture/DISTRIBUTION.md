@@ -185,8 +185,29 @@ Use `/whid:whid` for this plugin installation. On 2026-10-21, the official
 Claude submission portal showed “Directory submissions need a paid plan” for
 the publisher's current Free account. It requires Pro, Max, Team, or Enterprise
 to submit; the intended WHID listing remains free. No paid upgrade was started.
-The official Claude directory and Agensi listings are still pending; no listing
-URL is claimed for either.
+The official Claude directory listing remains blocked by that account plan;
+no official directory listing URL is claimed.
+
+### Agensi submission, 2026-10-21
+
+`WhatHaveIDone (WHID)` was submitted with the `0.2.0-alpha.2` skill ZIP and
+**Free** pricing. Creator Studio confirms **Pending Review / In review**, with
+one pending skill and zero live skills. This is a submitted listing, not an
+approval or live publication. The panel estimates review notification within
+24–48 hours; this is the platform's estimate, not a guarantee.
+
+The current creator flow explicitly requires payouts only for paid skills;
+this free submission succeeded without connecting Stripe or a wallet. The
+auto-generated description, FAQ, demo, and permissions were reviewed and
+corrected. The example explains real public commit `a307056` rather than the
+platform's invented middleware/security example. The actual Git/repository
+requirements, optional report writes, host-provider data processing, and alpha
+status are disclosed.
+
+Manage the existing submission in the
+[Agensi Creator Studio](https://www.agensi.io/dashboard#my-skills)
+(publisher sign-in required). No public listing URL has been confirmed yet.
+Reuse this submission for updates rather than creating a duplicate.
 
 ## Releasing marketplace updates
 
